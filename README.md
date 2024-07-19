@@ -5,20 +5,29 @@ Penulis: [Naufal](https://x.com/0xfal)
 
 > [!NOTE]
 > **WHAT IS Fuel?**\
-> ...
+> Fuel is an operating system purpose-built for Ethereum rollups. Fuel's unique architecture allows rollups to solve for PSI (parallelization, state minimized execution, interoperability). Powered by the FuelVM, Fuel aims to expand Ethereum's capability set without compromising security or decentralization.
 
 # Tutorial Fuel Final Testnet Node
 
-## Dependencies
+## Needs
 
-### Install Fuel toolchain:
-```
-curl https://install.fuel.network | sh
-```
-## Run Node
+### Computer
 
-### Getting a Sepolia (Ethereum Testnet) API Key
-An API key from any RPC provider that supports the Sepolia network will work. Relayers will help listen to events from the Ethereum network. We recommend either [Infura](https://www.infura.io/) or [Alchemy](https://www.alchemy.com/).
+You can use either VPS or your local PC with requirements:
+
+| ✅ Linux | ✅ macOS | ✅ Windows (WSL) |
+| ------------- | ------------- | ------------- |
+
+| Part | Minimum | Recommended |
+| ------------- | ------------- | ------------- |
+| CPU | 2 Core | 8 Core |
+| RAM | 4 GB | 12 GB |
+| SSD | 30 GB | 100 GB |
+
+This tutorial was created using Linux (Ubuntu), for other operating systems it may be slightly different.
+
+### Sepolia (Ethereum Testnet) API Key
+An API key from any RPC provider that supports the Sepolia network will work. We recommend either [Infura](https://www.infura.io/) **or** [Alchemy](https://www.alchemy.com/).
 
 The endpoints should look like the following:
 
@@ -31,9 +40,19 @@ https://sepolia.infura.io/v3/{YOUR_API_KEY}
 https://eth-sepolia.g.alchemy.com/v2/{YOUR_API_KEY}
 ```
 
+Will use to `<YOUR_ETHEREUM_SEPOLIA_RPC>` in the next step!!
+
+## Dependencies
+
+### Install Fuel toolchain:
+```
+curl https://install.fuel.network | sh
+```
+## Run Node
+
 ### Generating a P2P Key
 
-Do not share or lose this private key! Press any key to complete.
+Do not share or lose this private key, and do not forget to **BACKUP** it, will use to `<YOUR_KEYPAIR_SECRET>` in the next step!! Press any key to complete.
 ```
 fuel-core-keygen new --key-type peering
 ```
@@ -47,7 +66,7 @@ git clone https://github.com/FuelLabs/chain-configuration chain-configuration &&
 
 ### Running a Local Node
 
-Change `<YOUR_KEYPAIR_SECRET>` and `<YOUR_ETHEREUM_SEPOLIA_RPC>` to yours.
+Copy below and change `<YOUR_KEYPAIR_SECRET>` and `<YOUR_ETHEREUM_SEPOLIA_RPC>` to yours, paste to your terminal and press `enter` on your keyboard.
 ```
 sudo tee /etc/systemd/system/fueld.service > /dev/null << EOF
 [Unit]
@@ -88,15 +107,34 @@ WantedBy=multi-user.target
 EOF
 ```
 
+Run the service:
+```
+sudo systemctl daemon-reload && \
+sudo systemctl enable fueld && \
+sudo systemctl start fueld && \
+sudo systemctl status fueld.service
+```
+
 The output should be like this:
 ![image](https://github.com/user-attachments/assets/9bc8426b-a643-4bf0-8aae-c95bb6764423)
 
 
 # Help
 
-If you have any questions, find us on:\
-[ZuperHunt's Discord server](https://discord.gg/ZuperHunt)\
-[ZuperHunt's X(Twitter)](https://twitter.com/ZuperHunt)
+## How to check the logs?
+
+```
+sudo journalctl -u fueld -f -o cat
+```
+
+## How to restart my node?
+
+```
+sudo systemctl restart fueld
+```
+
+Reach us if you have more questions:\
+ZuperHunt's [Discord server](https://discord.gg/ZuperHunt) | [X(Twitter)](https://twitter.com/ZuperHunt)
 
 # Acknowledgements
 
