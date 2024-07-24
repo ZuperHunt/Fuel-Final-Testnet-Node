@@ -60,29 +60,26 @@ fuel-core-keygen new --key-type peering
 ### Chain Configuration
 
 ```
-mkdir .fueld
-git clone https://github.com/FuelLabs/chain-configuration chain-configuration && cp -r $HOME/chain-configuration/ignition/* $HOME/.fueld/
+git clone https://github.com/FuelLabs/chain-configuration.git
+```
+
+### Create tmux
+
+```
+tmux
 ```
 
 ### Running a Local Node
 
 Copy below and change `<YOUR_KEYPAIR_SECRET>` and `<YOUR_ETHEREUM_SEPOLIA_RPC>` to yours, paste to your terminal and press `enter` on your keyboard.
 ```
-sudo tee /etc/systemd/system/fueld.service > /dev/null << EOF
-[Unit]
-Description=Fuel final testnet node guide by ZuperHunt
-After=network.target
-
-[Service]
-User=$USER
-Type=simple
-ExecStart=$(which fuel-core run) \
+fuel-core run \
 --service-name=zuperfuel \
 --keypair <YOUR_KEYPAIR_SECRET> \
 --relayer <YOUR_ETHEREUM_SEPOLIA_RPC> \
 --ip=0.0.0.0 --port=4000 --peering-port=30333 \
---db-path=$HOME/.fueld \
---snapshot $HOME/.fueld \
+--db-path=~/.fuel-sepolia-testnet \
+--snapshot ./chain-configuration/ignition/ \
 --utxo-validation --poa-instant false --enable-p2p \
 --reserved-nodes /dns4/p2p-testnet.fuel.network/tcp/30333/p2p/16Uiu2HAmDxoChB7AheKNvCVpD4PHJwuDGn8rifMBEHmEynGHvHrf \
 --sync-header-batch-size 100 \
@@ -91,20 +88,6 @@ ExecStart=$(which fuel-core run) \
 --relayer-da-deploy-height=5827607 \
 --relayer-log-page-size=500 \
 --sync-block-stream-buffer-size 30
-
-Restart=on-failure
-RestartSec=5s
-StartLimitBurst=3
-StartLimitIntervalSec=10s
-TimeoutStartSec=60s
-TimeoutStopSec=60s
-LimitNOFILE=65535
-WatchdogSec=3600s
-ExecStartPre=/bin/sleep 10
-
-[Install]
-WantedBy=multi-user.target 
-EOF
 ```
 
 Run the service:
@@ -133,10 +116,23 @@ sudo journalctl -u fueld -f -o cat
 sudo systemctl restart fueld
 ```
 
+## How to detach from tmux session?
+
+Press `ctrl` + `b` + `d` on your keyboard
+
+## How to attach to last tmux session?
+
+Run following command:
+```
+tmux a
+```
+
+---
+
 Reach us if you have more questions:\
 ZuperHunt's [Discord server](https://discord.gg/ZuperHunt) | [X(Twitter)](https://twitter.com/ZuperHunt)
 
 # Acknowledgements
 
 * [Running a local Fuel node connected to Testnet using P2P](https://docs.fuel.network/guides/running-a-node/running-a-testnet-node/)
-* [Fuel Node Setup Guide](https://docs.nodecattel.xyz/node-guides/quick-start/fuel-node-setup-guide)
+* [tmux cheatsheet](https://quickref.me/tmux.html)
