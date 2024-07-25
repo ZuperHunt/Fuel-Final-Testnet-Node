@@ -104,17 +104,9 @@ The output should be like this:
 
 # Help
 
-## How to check the logs?
+## How to stop my node?
 
-```
-sudo journalctl -u fueld -f -o cat
-```
-
-## How to restart my node?
-
-```
-sudo systemctl restart fueld
-```
+Press `ctrl` + `c` on your keyboard
 
 ## How to detach from tmux session?
 
